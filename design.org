@@ -1,0 +1,34 @@
+* Overview
+
+Syscond basically consists of one shell script that does everything,
+depending on which arguments it's called with. The actual checks are
+performed by stand-alone executables which are called by syscond, and
+which print reports in a specific format to standard output (which is
+being redirected by the calling syscond into the appropriate report
+file). 
+
+** Directory structure
+
+- syscond: The main directory.
+  - report: Where the report files are generated.
+  - check: The directory for the executables that check things.
+    - minute: Executables that are to be run every minute.
+    - hour: Executables that are to be run every hour.
+    - day: Executables that are to be run every day.
+
+** Arguments
+
+*** check
+
+The check command takes a "sub argument", which is one of:
+
+- minute
+- hour
+- day
+
+When syscond is run like this, it runs all scripts in a directory
+corresponding to the sub argument. All scripts produce a report
+
+*** status
+
+The status command produces a human-readable status report.
