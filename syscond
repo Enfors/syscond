@@ -6,7 +6,43 @@ Main() {
 	    exit 1
 	fi
 
-	
+	arg=$1
+
+	case $arg in
+	    check)
+		shift
+		CommandCheck $*
+		;;
+
+	    *)
+		echo "Unknown command $*" >&2
+		exit 2
+		;;
+	esac
+}
+
+CommandCheck() {
+    if [ "$#" -ne 1 ]; then
+	echo "Usage: syscond check day | hour | minute" >&2
+	exit 3
+    fi
+
+    type=$1
+
+    case $type in
+	day)
+	    ;;
+	hour)
+	    ;;
+        minute)
+	    ;;
+
+	*)
+	    echo "Usage: syscond check day | hour | minute" >&2
+	    exit 4
+	    ;;
+    esac
+
 }
 
 Main $*
