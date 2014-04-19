@@ -1,8 +1,16 @@
 #!/bin/sh
 
+CSI="\033["
+green="${CSI}32m"
+yellow="${CSI}33m"
+red="${CSI}31m"
+reset="${CSI}0m"
+
 syscond_dir=$HOME/devel/shell/syscond
 check_dir=$syscond_dir/check
 report_dir=$syscond_dir/report
+
+master_cond=0
 
 Main() {
 	if [ "$#" -lt 1 ]; then
@@ -18,12 +26,21 @@ Main() {
 		CommandCheck $*
 		;;
 
+	    status)
+		shift
+		CommandStatus $*
+		;;
+
 	    *)
 		echo "Unknown command $*" >&2
 		exit 2
 		;;
 	esac
 }
+
+#
+# Check functions
+#
 
 CommandCheck() {
     if [ "$#" -ne 1 ]; then
@@ -72,5 +89,67 @@ RunScript() {
 
     $script >$report_file
 }
+
+#
+# Status functions
+#
+
+CommandStatus() {
+    master_cond=0
+
+    echo "=== System condition report ==="
+    echo
+
+    for report_file in $report_dir/*.report; do
+	PrintReport $report_file
+    done
+
+    master_cond_color=$(QueryCondColor $master_cond)
+
+    echo
+    echo "=== Master condition: $master_cond_color ==="
+}
+
+PrintReport() {
+    report_file=$1
+
+    report=$(cat $report_file)
+
+    set $report
+    
+    cond=$1
+
+    if [ $cond -gt $master_cond ]; then
+	master_cond=$cond;
+    fi
+
+    shift
+    text="$*"
+
+    cond_color=$(QueryCondColor $cond)
+
+    echo "$cond_color: $text"
+}
+
+QueryCondColor() {
+    cond=$1
+
+    case $cond in
+	0)
+	    echo "${green}GREEN${reset}"
+	    ;;
+	1)
+	    echo "${yellow}YELLOW${reset}"
+	    ;;
+	2)
+	    echo "${red}RED${reset}"
+	    ;;
+	*)
+	    echo "IncorrectCond"
+	    ;;
+    esac
+
+}
+
 
 Main $*
