@@ -1,5 +1,8 @@
 #!/bin/sh
 
+syscond_dir=$HOME/devel/shell/syscond
+check_dir=$syscond_dir/check
+
 Main() {
 	if [ "$#" -lt 1 ]; then
 	    echo "Usage: syscond command" >&2
@@ -43,6 +46,23 @@ CommandCheck() {
 	    ;;
     esac
 
+}
+
+RunScriptsInDir() {
+    dir=$1
+
+    for file in $check_dir/$dir/*; do
+	RunScript $file
+    done
+}
+
+RunScript() {
+    script=$1
+
+    if [ ! -x $script ];
+	echo "Ignoring non-executable file $script."
+	return 1
+    fi
 }
 
 Main $*
