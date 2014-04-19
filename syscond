@@ -1,0 +1,12 @@
+#!/bin/sh
+
+Main() {
+	if [ "$#" -lt 1 ]; then
+	    echo "Usage: syscond command" >&2
+	    exit 1
+	fi
+
+	
+}
+
+Main $*
