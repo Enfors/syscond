@@ -2,6 +2,7 @@
 
 syscond_dir=$HOME/devel/shell/syscond
 check_dir=$syscond_dir/check
+report_dir=$syscond_dir/report
 
 Main() {
 	if [ "$#" -lt 1 ]; then
@@ -60,13 +61,16 @@ RunScriptsInDir() {
 
 RunScript() {
     script=$1
+    script_filename=$(basename $script) # Filename without the path
 
     if [ ! -x $script ]; then
 	echo "Ignoring non-executable file $script."
 	return 1
     fi
 
-    $script
+    report_file=$report_dir/$script_filename.report
+
+    $script >$report_file
 }
 
 Main $*
