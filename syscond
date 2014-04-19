@@ -30,9 +30,9 @@ CommandCheck() {
 	exit 3
     fi
 
-    type=$1
+    dir=$1
 
-    case $type in
+    case $dir in
 	day)
 	    ;;
 	hour)
@@ -45,6 +45,8 @@ CommandCheck() {
 	    exit 4
 	    ;;
     esac
+
+    RunScriptsInDir $dir
 
 }
 
@@ -59,10 +61,12 @@ RunScriptsInDir() {
 RunScript() {
     script=$1
 
-    if [ ! -x $script ];
+    if [ ! -x $script ]; then
 	echo "Ignoring non-executable file $script."
 	return 1
     fi
+
+    $script
 }
 
 Main $*
