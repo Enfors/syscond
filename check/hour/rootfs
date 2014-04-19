@@ -1,0 +1,18 @@
+#!/bin/sh
+
+yellow_threshold=50
+red_threshold=90
+
+cond=0
+
+percent=$(df -m | grep "^rootfs" | awk '{print $5}' | sed -e 's/%//')
+
+if [ $percent -gt $yellow_threshold ]; then
+    cond=1
+fi
+
+if [ $percent -gt $red_threshold ]; then
+    cond=2
+fi
+
+echo "$cond\tThe rootfs filesystem is $percent% full."
