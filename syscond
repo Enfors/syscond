@@ -123,22 +123,6 @@ CommandStatus() {
     echo "=== Master condition: $master_cond_color ==="
 }
 
-Msg() {
-    echo $*
-}
-
-VerboseMsg() {
-    if [ $brief_mode -eq 1 ]; then
-	return 0
-    fi
-
-    Msg $*
-}
-
-BriefMsg() {
-    Msg $*
-}
-
 PrintReport() {
     report_file=$1
 
@@ -184,5 +168,24 @@ QueryCondColor() {
 
 }
 
+#
+# Utility functions
+#
+
+Msg() {
+    echo $*
+}
+
+VerboseMsg() {
+    if [ $brief_mode -eq 1 ]; then
+	return 0
+    fi
+
+    Msg $*
+}
+
+BriefMsg() {
+    Msg $*
+}
 
 Main $*
