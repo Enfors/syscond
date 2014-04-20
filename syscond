@@ -11,6 +11,7 @@ check_dir=$syscond_dir/check
 report_dir=$syscond_dir/report
 
 master_cond=0
+brief_mode=0
 
 Main() {
 	if [ "$#" -lt 1 ]; then
@@ -97,8 +98,20 @@ RunScript() {
 CommandStatus() {
     master_cond=0
 
-    echo "=== System condition report ==="
-    echo
+    while getopts ":b" opt; do
+	case $opt in
+	    b)
+		brief_mode=1
+		;;
+	    \?)
+		echo "Invalid option: -$OPTARG" >&2
+		exit 5
+		;;
+	esac
+    done
+
+    VerboseMsg "=== System condition report ==="
+    VerboseMsg
 
     for report_file in $report_dir/*.report; do
 	PrintReport $report_file
@@ -106,8 +119,24 @@ CommandStatus() {
 
     master_cond_color=$(QueryCondColor $master_cond)
 
-    echo
+    VerboseMsg
     echo "=== Master condition: $master_cond_color ==="
+}
+
+Msg() {
+    echo $*
+}
+
+VerboseMsg() {
+    if [ $brief_mode -eq 1 ]; then
+	return 0
+    fi
+
+    Msg $*
+}
+
+BriefMsg() {
+    Msg $*
 }
 
 PrintReport() {
@@ -128,7 +157,11 @@ PrintReport() {
 
     cond_color=$(QueryCondColor $cond)
 
-    echo "$cond_color: $text"
+    if [ $cond -eq 0 ]; then
+	VerboseMsg "$cond_color: $text"
+    else
+	BriefMsg "$cond_color: $text"
+    fi
 }
 
 QueryCondColor() {
