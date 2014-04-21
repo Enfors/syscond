@@ -165,7 +165,54 @@ QueryCondColor() {
 	    echo "IncorrectCond"
 	    ;;
     esac
+}
 
+#
+# Installation functions
+#
+
+MkDir() {
+    dir=$1
+
+    if [ -z "$dir" ]; then
+	ErrorMsg "MkDir: No argument"
+	exit 6
+    fi
+
+    if [ -d "$dir" ]; then
+	return 0		# Directory already exists. Do nothing.
+    fi
+
+    mkdir -p $dir
+
+    if [ $? -ne 0 ]; then
+	ErrorMsg "MkDir: Failed to create directory '$dir'."
+	exit 7
+    fi
+}
+
+CopyFileToDir() {
+    if [ $# -ne 2 ]; then
+	ErrorMsg "CopyFileToDir: Expected two arguments, got '$*'."
+	exit 8
+    fi
+
+    file=$1
+    target_dir=$2
+
+    if [ ! -e $file ]; then
+	ErrorMsg "CopyFileToDir: File $file doesn't exist."
+	exit 9
+    fi
+
+    MkDir $dir
+
+    cp $file $dir
+
+    if [ $? -ne 0 ]; then
+	ErrorMsg "CopyFileToDir: Failed to copy '$file' to '$dir'."
+	exit 10
+    fi
 }
 
 #
@@ -186,6 +233,10 @@ VerboseMsg() {
 
 BriefMsg() {
     Msg $*
+}
+
+ErrorMsg() {
+    Msg "syscond error: $*" >&2
 }
 
 Main $*
