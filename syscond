@@ -50,7 +50,7 @@ Main() {
 
 CommandCheck() {
     if [ "$#" -ne 1 ]; then
-	echo "Usage: syscond check day | hour | minute" >&2
+	ErrorMsg "Usage: syscond check day | hour | minute"
 	exit 3
     fi
 
@@ -65,7 +65,7 @@ CommandCheck() {
 	    ;;
 
 	*)
-	    echo "Usage: syscond check day | hour | minute" >&2
+	    ErrorMsg "Usage: syscond check day | hour | minute"
 	    exit 4
 	    ;;
     esac
