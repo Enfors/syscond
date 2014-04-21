@@ -32,6 +32,11 @@ Main() {
 		CommandStatus $*
 		;;
 
+	    install)
+		shift
+		CommandInstall $*
+		;;
+
 	    *)
 		echo "Unknown command $*" >&2
 		exit 2
@@ -171,19 +176,35 @@ QueryCondColor() {
 # Installation functions
 #
 
-MkDir() {
-    dir=$1
+CommandInstall() {
+    install_dir=$(AskWithDefault "Installation directory" $HOME)
+    
+    VerifyWritableDir $install_dir
 
-    if [ -z "$dir" ]; then
-	ErrorMsg "MkDir: No argument"
+    Msg "Installing in $install_dir..."
+
+    MkDir "$install_dir/syscond"                755
+    MkDir "$install_dir/syscond/check"          755
+    MkDir "$install_dir/syscond/check/minute"   755
+    MkDir "$install_dir/syscond/check/hour"     755
+    MkDir "$install_dir/syscond/check/day"      755
+    MkDir "$install_dir/syscond/report"         755
+}
+
+MkDir() {
+    if [ $# -ne 2 ]; then
+	ErrorMsg "MkDir: Expected two arguments, got '$*'."
 	exit 6
     fi
+
+    dir=$1
+    mode=$2
 
     if [ -d "$dir" ]; then
 	return 0		# Directory already exists. Do nothing.
     fi
 
-    mkdir -p $dir
+    mkdir -pm $mode $dir
 
     if [ $? -ne 0 ]; then
 	ErrorMsg "MkDir: Failed to create directory '$dir'."
@@ -237,6 +258,66 @@ BriefMsg() {
 
 ErrorMsg() {
     Msg "syscond error: $*" >&2
+}
+
+Ask() {
+    if [ $# -ne 1 ]; then
+	ErrorMsg "Ask: Expected one argument, got '$*'."
+	exit 11
+    fi
+
+    Msg -n "$1 " >/dev/tty
+    
+    read answer
+    echo $answer
+}
+
+AskWithDefault() {
+    if [ $# -ne 2 ]; then
+	ErrorMsg "AskWithDefault: Expected two arguments, got '$*'."
+	exit 12
+    fi
+
+    question=$1
+    default_answer=$2
+
+    answer=$(Ask "$question [$default_answer]:")
+
+    if [ -z "$answer" ]; then	# If answer is empty
+	answer=$default_answer
+    fi
+
+    echo $answer
+}
+
+VerifyDir() {
+    if [ $# -ne 1 ]; then
+	ErrorMsg "VerifyDir: Expected one argument, got '$*'."
+	exit 12
+    fi
+
+    dir=$1
+
+    if [ ! -d $dir ]; then
+	ErrorMsg "VerifyDir: '$dir' is not a directory."
+	exit 13
+    fi
+}
+
+VerifyWritableDir() {
+    if [ $# -ne 1 ]; then
+	ErrorMsg "VerifyWritableDir: Expected one argument, got '$*'."
+	exit 14
+    fi
+
+    dir=$1
+
+    VerifyDir $dir
+
+    if [ ! -w "$dir" ]; then
+	ErrorMsg "VerifyWritableDir: '$dir' is not writable."
+	exit 14
+    fi
 }
 
 Main $*
