@@ -6,7 +6,11 @@ yellow="${CSI}33m"
 red="${CSI}31m"
 reset="${CSI}0m"
 
-syscond_dir=$HOME/devel/shell/syscond
+default_dir_mode=755
+
+cd $(dirname $0)
+syscond_dir=$(pwd)
+
 check_dir=$syscond_dir/check
 report_dir=$syscond_dir/report
 
@@ -185,10 +189,17 @@ CommandInstall() {
 
     MkDir "$install_dir/syscond"                755
     MkDir "$install_dir/syscond/check"          755
+    MkDir "$install_dir/syscond/check/lib"      755
     MkDir "$install_dir/syscond/check/minute"   755
     MkDir "$install_dir/syscond/check/hour"     755
     MkDir "$install_dir/syscond/check/day"      755
     MkDir "$install_dir/syscond/report"         755
+
+    CopyFileToDir syscond "$install_dir/syscond"
+    
+    for file in check/lib/*; do
+	CopyFileToDir $file "$install_dir/syscond/check/lib/"
+    done
 }
 
 MkDir() {
@@ -226,12 +237,13 @@ CopyFileToDir() {
 	exit 9
     fi
 
-    MkDir $dir
+    MkDir $target_dir $default_dir_mode
 
-    cp $file $dir
+    VerboseMsg "Copying $file to $target_dir"
+    cp $file $target_dir
 
     if [ $? -ne 0 ]; then
-	ErrorMsg "CopyFileToDir: Failed to copy '$file' to '$dir'."
+	ErrorMsg "CopyFileToDir: Failed to copy '$file' to '$target_dir'."
 	exit 10
     fi
 }
@@ -319,5 +331,7 @@ VerifyWritableDir() {
 	exit 14
     fi
 }
+
+cd $(dirname $0)		# cd to where this file is
 
 Main $*
