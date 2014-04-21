@@ -12,9 +12,11 @@ file).
 - syscond: The main directory.
   - report: Where the report files are generated.
   - check: The directory for the executables that check things.
-    - minute: Executables that are to be run every minute.
-    - hour: Executables that are to be run every hour.
-    - day: Executables that are to be run every day.
+    - lib: Checking executables that can be linked to from the other
+      directories.
+    - minute: Links to executables that are to be run every minute.
+    - hour: Links to executables that are to be run every hour.
+    - day: Links to executables that are to be run every day.
 
 ** Arguments
 
