@@ -1,0 +1,19 @@
+#!/bin/sh
+
+num_err_files=$(find $HOME/log -name "*.err" | wc -l)
+
+case $num_err_files in
+    0)
+	echo "0\tThere are no error files \$HOME/log."
+	exit 0
+	;;
+
+    1)
+	echo "1\tThere is an error file in \$HOME/log."
+	exit 0
+	;;
+    
+    *)
+	echo "2\tThere are several error files in \$HOME/log."
+	;;
+esac
