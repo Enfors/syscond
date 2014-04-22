@@ -1,0 +1,25 @@
+#!/bin/sh
+
+log_file=$HOME/log/frontdown.log
+
+yellow_threshold=1500 # 25 hours
+red_threshold=4320    # 3 days
+
+cond=0
+
+if [ ! -e "$log_file" ]; then
+    echo "2\The backup has never been run."
+    exit 0
+fi
+
+if test "`find $log_file -mmin +${red_threshold}`"; then
+    echo "1\tIt has been more than 3 days since the last backup."
+    exit 0
+fi
+
+if test "`find $log_file -mmin +${yellow_threshold}`"; then
+    echo "1\tIt has been more than 25 hours since the last backup."
+    exit 0
+fi
+
+echo "0\tA backup has been run during the last 25 hours."
