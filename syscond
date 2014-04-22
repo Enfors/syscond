@@ -19,7 +19,7 @@ brief_mode=0
 
 Main() {
 	if [ "$#" -lt 1 ]; then
-	    echo "Usage: syscond command" >&2
+	    ErrorMsg "Usage: syscond command"
 	    exit 1
 	fi
 
@@ -42,7 +42,7 @@ Main() {
 		;;
 
 	    *)
-		echo "Unknown command $*" >&2
+		ErrorMsg "Unknown command '$*'."
 		exit 2
 		;;
 	esac
@@ -113,7 +113,7 @@ CommandStatus() {
 		brief_mode=1
 		;;
 	    \?)
-		echo "Invalid option: -$OPTARG" >&2
+		ErrorMsg "Invalid option: -$OPTARG"
 		exit 5
 		;;
 	esac
