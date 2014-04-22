@@ -8,7 +8,7 @@ red_threshold=4320    # 3 days
 cond=0
 
 if [ ! -e "$log_file" ]; then
-    echo "2\The backup has never been run."
+    echo "2\tThe backup has never been run."
     exit 0
 fi
 
