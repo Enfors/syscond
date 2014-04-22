@@ -4,7 +4,7 @@ num_err_files=$(find $HOME/log -name "*.err" | wc -l)
 
 case $num_err_files in
     0)
-	echo "0\tThere are no error files \$HOME/log."
+	echo "0\tThere are no error files in \$HOME/log."
 	exit 0
 	;;
 
