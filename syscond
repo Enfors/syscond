@@ -97,7 +97,7 @@ RunScript() {
 
     report_file=$report_dir/$script_filename.report
 
-    $script >$report_file
+    nice $script >$report_file
 }
 
 #
