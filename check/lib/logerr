@@ -1,6 +1,14 @@
 #!/bin/sh
 
-num_err_files=$(find $HOME/log -name "*.err" | wc -l)
+num_err_files=0
+
+err_files=$(find $HOME/log -name "*.err")
+
+for file in $err_files; do
+    if test -s $file; then	# If file exists and has non-zero size
+	num_err_files=$(( $num_err_files + 1 ))
+    fi
+done
 
 case $num_err_files in
     0)
