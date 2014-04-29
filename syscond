@@ -18,11 +18,6 @@ master_cond=0
 brief_mode=0
 
 Main() {
-	if [ "$#" -lt 1 ]; then
-	    ErrorMsg "Usage: syscond command"
-	    exit 1
-	fi
-
 	arg=$1
 
 	case $arg in
@@ -39,6 +34,10 @@ Main() {
 	    install)
 		shift
 		CommandInstall $*
+		;;
+
+	    "")
+		CommandStatus
 		;;
 
 	    *)
