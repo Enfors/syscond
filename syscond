@@ -334,3 +334,4 @@ VerifyWritableDir() {
 cd $(dirname $0)		# cd to where this file is
 
 Main $*
+# dummy update
