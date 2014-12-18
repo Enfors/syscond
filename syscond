@@ -64,6 +64,10 @@ CommandCheck() {
 	    ;;
 	hour)
 	    ;;
+	5min)
+	    ;;
+	15min)
+	    ;;
         minute)
 	    ;;
 
@@ -106,10 +110,14 @@ RunScript() {
 CommandStatus() {
     master_cond=0
 
-    while getopts ":b" opt; do
+    while getopts ":bB" opt; do
 	case $opt in
 	    b)
 		brief_mode=1
+		;;
+	    B)
+		brief_mode=1
+		very_brief_mode=1
 		;;
 	    \?)
 		ErrorMsg "Invalid option: -$OPTARG"
@@ -128,7 +136,11 @@ CommandStatus() {
     master_cond_color=$(QueryCondColor $master_cond)
 
     VerboseMsg
-    echo "=== Master condition: $master_cond_color ==="
+    if [ -n "$very_brief_mode" ]; then
+	echo $(QueryCondColor $master_cond)
+    else
+	echo "=== Master condition: $master_cond_color ==="
+    fi
 }
 
 PrintReport() {
