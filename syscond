@@ -110,7 +110,7 @@ RunScript() {
 CommandStatus() {
     master_cond=0
 
-    while getopts ":bB" opt; do
+    while getopts ":bBt" opt; do
 	case $opt in
 	    b)
 		brief_mode=1
@@ -118,6 +118,14 @@ CommandStatus() {
 	    B)
 		brief_mode=1
 		very_brief_mode=1
+		;;
+	    t)
+		tmux_colors_mode=1
+		CSI=""
+		green="#[fg=green]"
+		yellow="#[fg=yellow]"
+		red="#[fg=red]"
+		reset="#[fg=white]"
 		;;
 	    \?)
 		ErrorMsg "Invalid option: -$OPTARG"
