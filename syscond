@@ -94,7 +94,7 @@ RunScript() {
     script_filename=$(basename $script) # Filename without the path
 
     if [ ! -x $script ]; then
-	echo "Ignoring non-executable file $script."
+	#echo "Ignoring non-executable file $script."
 	return 1
     fi
 
@@ -210,6 +210,8 @@ CommandInstall() {
     MkDir "$install_dir/syscond/check"          755
     MkDir "$install_dir/syscond/check/lib"      755
     MkDir "$install_dir/syscond/check/minute"   755
+    MkDir "$install_dir/syscond/check/5min"     755
+    MkDir "$install_dir/syscond/check/15min"    755
     MkDir "$install_dir/syscond/check/hour"     755
     MkDir "$install_dir/syscond/check/day"      755
     MkDir "$install_dir/syscond/report"         755
