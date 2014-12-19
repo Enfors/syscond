@@ -154,6 +154,14 @@ CommandStatus() {
 PrintReport() {
     report_file=$1
 
+    if [ -z "$report_file" ]; then
+	return 1;
+    fi
+
+    if [ ! -f $report_file ]; then
+	return 1;
+    fi
+
     report=$(cat $report_file)
 
     set $report
