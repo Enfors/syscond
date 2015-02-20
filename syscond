@@ -100,7 +100,8 @@ RunScript() {
 
     report_file=$report_dir/$script_filename.report
 
-    nice $script >$report_file
+    nice $script >$report_file.tmp
+    mv -f $report_file.tmp $report_file
 }
 
 #
