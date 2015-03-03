@@ -70,15 +70,22 @@ CommandCheck() {
 	    ;;
         minute)
 	    ;;
+	all)
+	    ;;
 
 	*)
-	    ErrorMsg "Usage: syscond check day | hour | minute"
+	    ErrorMsg "Usage: syscond check day | hour | minute | all"
 	    exit 4
 	    ;;
     esac
 
-    RunScriptsInDir $dir
-
+    if [ "$dir" == "all" ]; then
+	for dir2 in day hour 5min 15min minute; do
+	    RunScriptsInDir $dir2
+	done
+    else
+	RunScriptsInDir $dir
+    fi
 }
 
 RunScriptsInDir() {
