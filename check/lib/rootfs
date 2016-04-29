@@ -5,8 +5,13 @@ red_threshold=95
 
 cond=0
 
-percent=$(df -m | grep "^rootfs" | awk '{print $5}' | sed -e 's/%//')
+percent=$(df -m | grep "^/dev/root" | awk '{print $5}' | sed -e 's/%//')
 
+if [ $? -ne 0 ]; then
+    echo "2\tFailed to check rootfs."
+    exit 1
+fi
+    
 if [ $percent -gt $yellow_threshold ]; then
     cond=1
 fi
