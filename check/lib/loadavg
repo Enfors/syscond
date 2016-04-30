@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
-yellow_threshold = 0.3
-red_threshold    = 0.7
+yellow_threshold = 0.5
+red_threshold    = 1.0
 
 with open("/proc/loadavg") as f:
     line = f.readline()
