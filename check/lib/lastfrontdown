@@ -13,7 +13,7 @@ if [ ! -e "$log_file" ]; then
 fi
 
 if test "`find $log_file -mmin +${red_threshold}`"; then
-    echo "1\tIt has been more than 3 days since the last backup."
+    echo "2\tIt has been more than 3 days since the last backup."
     exit 0
 fi
 
