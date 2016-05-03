@@ -118,7 +118,7 @@ RunScript() {
 CommandStatus() {
     master_cond=0
 
-    while getopts ":bBt" opt; do
+    while getopts ":bBtn" opt; do
 	case $opt in
 	    b)
 		brief_mode=1
@@ -134,6 +134,14 @@ CommandStatus() {
 		yellow="#[fg=yellow]"
 		red="#[fg=red]"
 		reset="#[fg=white]"
+		;;
+	    n)
+		no_colors_mode=1
+		CSI=""
+		green=""
+		yellow=""
+		red=""
+		reset=""
 		;;
 	    \?)
 		ErrorMsg "Invalid option: -$OPTARG"
