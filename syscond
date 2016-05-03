@@ -79,7 +79,7 @@ CommandCheck() {
 	    ;;
     esac
 
-    if [ "$dir" == "all" ]; then
+    if [ "$dir" = "all" ]; then
 	for dir2 in day hour 5min 15min minute; do
 	    RunScriptsInDir $dir2
 	done
