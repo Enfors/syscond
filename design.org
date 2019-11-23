@@ -1,11 +1,16 @@
-* Overview HEJ CHRISTER - Hej Jonas.
+* Overview
+
+Syscond is a script which can be used to monitor the status of a Linux
+machine. It is basically a very simple system which examines the
+machine, and summarizes its status as "green," "yellow" or "red" in a
+number of areas.
 
 Syscond basically consists of one shell script that does everything,
 depending on which arguments it's called with. The actual checks are
 performed by stand-alone executables which are called by syscond, and
 which print reports in a specific format to standard output (which is
 being redirected by the calling syscond into the appropriate report
-file). 
+file).
 
 ** Directory structure
 
