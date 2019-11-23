@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 
-yellow_threshold = 0.5
-red_threshold    = 1.0
+yellow_threshold = 1.0
+red_threshold    = 5.0
 
 with open("/proc/loadavg") as f:
     line = f.readline()
 
 words = line.strip().split(" ")
 
-load_avg = float(words[2])
+load_avg = float(words[1])
 
 if load_avg > red_threshold:
     cond = 2
@@ -17,5 +17,5 @@ elif load_avg > yellow_threshold:
 else:
     cond = 0
 
-print("%d\tThe load average over the past 15 minutes is %.2f." \
+print("%d\tThe load average over the past five minutes is %.2f." \
           % (cond, load_avg))
