@@ -259,6 +259,7 @@ CommandInstall() {
     AddLineToCrontab "0,15,30,45 * * * * $install_dir/syscond/syscond check 15min"
     AddLineToCrontab "0 * * * * $install_dir/syscond/syscond check hour"
     AddLineToCrontab "0 0 * * * $install_dir/syscond/syscond check day"
+    AddLineToCrontab "* * * * * $install_dir/syscond/syscond status -Bt >$HOME/.local/status/syscond"
 
     Msg "Installing default checks..."
     InstallCheck $install_dir loadavg minute
