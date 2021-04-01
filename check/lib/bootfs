@@ -1,0 +1,9 @@
+#!/bin/sh
+
+. $HOME/syscond/lib/syscondlib.sh
+
+yellow_threshold=75
+red_threshold=90
+
+CheckFS /boot boot $yellow_threshold $red_threshold
+

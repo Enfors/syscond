@@ -5,5 +5,6 @@
 yellow_threshold=85
 red_threshold=95
 
-CheckFS / root $yellow_threshold $red_threshold
+CheckFS /home home $yellow_threshold $red_threshold
+
 

@@ -246,8 +246,10 @@ CommandInstall() {
     MkDir "$install_dir/syscond/check/hour"     755
     MkDir "$install_dir/syscond/check/day"      755
     MkDir "$install_dir/syscond/report"         755
+    MkDir "$install_dir/syscond/lib"            755
 
     CopyFileToDir syscond "$install_dir/syscond"
+    CopyFileToDir lib/syscondlib.sh "$install_dir/syscond/lib"
     
     for file in check/lib/*; do
 	CopyFileToDir $file "$install_dir/syscond/check/lib/"
