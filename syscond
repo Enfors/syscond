@@ -15,7 +15,14 @@ check_dir=$syscond_dir/check
 report_dir=$syscond_dir/report
 
 master_cond=0
-brief_mode=0
+brief_mode=1
+
+if [ ! -d "$HOME/enfors-setup" ]; then
+    echo "SysCond requires enfors-setup: github.com/enfors/enfors-setup" >&2
+    exit 1
+fi
+
+. ~/enfors-setup/enfors-tools.sh
 
 Main() {
 	arg=$1
@@ -245,6 +252,40 @@ CommandInstall() {
     for file in check/lib/*; do
 	CopyFileToDir $file "$install_dir/syscond/check/lib/"
     done
+
+    Msg "Updating crontab..."
+    AddLineToCrontab "* * * * * $install_dir/syscond/syscond check minute"
+    AddLineToCrontab "0,5,10,15,20,25,30,35,40,45,50,55 * * * * $install_dir/syscond/syscond check 5min"
+    AddLineToCrontab "0,15,30,45 * * * * $install_dir/syscond/syscond check 15min"
+    AddLineToCrontab "0 * * * * $install_dir/syscond/syscond check hour"
+    AddLineToCrontab "0 0 * * * $install_dir/syscond/syscond check day"
+
+    Msg "Installing default checks..."
+    InstallCheck $install_dir loadavg minute
+    InstallCheck $install_dir rootfs  5min
+}
+
+InstallCheck()
+{
+    install_dir=$1
+    check=$2
+    period=$3
+
+    if [ ! -d $install_dir/syscond/check/$period ]; then
+        ErrorMsg "InstallCheck: Invalid period '$period'."
+        exit 16
+    fi
+
+    source="$install_dir/syscond/check/lib/$check"
+
+    if [ ! -e $source ]; then
+        ErrorMsg "InstallCheck: Invalid check '$check' (not found: '$source')"
+        exit 17
+    fi
+    
+    target="$install_dir/syscond/check/$period/$check"
+
+    Cmd ln -sf $source $target
 }
 
 MkDir() {
@@ -285,7 +326,7 @@ CopyFileToDir() {
     MkDir $target_dir $default_dir_mode
 
     VerboseMsg "Copying $file to $target_dir"
-    cp $file $target_dir
+    cp -f $file $target_dir
 
     if [ $? -ne 0 ]; then
 	ErrorMsg "CopyFileToDir: Failed to copy '$file' to '$target_dir'."
@@ -352,14 +393,14 @@ AskWithDefault() {
 VerifyDir() {
     if [ $# -ne 1 ]; then
 	ErrorMsg "VerifyDir: Expected one argument, got '$*'."
-	exit 12
+	exit 13
     fi
 
     dir=$1
 
     if [ ! -d $dir ]; then
 	ErrorMsg "VerifyDir: '$dir' is not a directory."
-	exit 13
+	exit 14
     fi
 }
 
@@ -375,7 +416,7 @@ VerifyWritableDir() {
 
     if [ ! -w "$dir" ]; then
 	ErrorMsg "VerifyWritableDir: '$dir' is not writable."
-	exit 14
+	exit 15
     fi
 }
 
