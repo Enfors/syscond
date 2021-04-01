@@ -9,13 +9,13 @@ reset="${CSI}0m"
 default_dir_mode=755
 
 cd $(dirname $0)
-syscond_dir=$(pwd)
+syscond_dir=$HOME/syscond
 
 check_dir=$syscond_dir/check
 report_dir=$syscond_dir/report
 
 master_cond=0
-brief_mode=1
+brief_mode=0
 
 if [ ! -d "$HOME/enfors-setup" ]; then
     echo "SysCond requires enfors-setup: github.com/enfors/enfors-setup" >&2
