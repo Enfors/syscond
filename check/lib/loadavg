@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-yellow_threshold = 1.0
+yellow_threshold = 1.5
 red_threshold    = 5.0
 
 with open("/proc/loadavg") as f:
