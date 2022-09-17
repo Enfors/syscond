@@ -2,8 +2,8 @@
 
 . $HOME/syscond/lib/syscondlib.sh
 
-yellow_threshold=85
-red_threshold=95
+yellow_threshold=95
+red_threshold=98
 
 CheckFS / root $yellow_threshold $red_threshold
 
